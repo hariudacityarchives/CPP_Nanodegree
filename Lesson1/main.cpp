@@ -89,18 +89,26 @@ void AddToOpen(int x, int y, int g, int h, vector<vector<int>> &openlist,
  * Expand current nodes's neighbors and add them to the open list.
  */
 void ExpandNeighbors(const vector<int> currentNode, int goal[2],
-                     vector<vector<int>> &open, vector<vector<State>> &grid) {
+                     vector<vector<int>> &openlist,
+                     vector<vector<State>> &grid) {
 
   // TODO: Get current node's data.
   int x = currentNode[0];
   int y = currentNode[1];
   int g = currentNode[2];
-
   // TODO: Loop through current node's potential neighbors.
-
-  // TODO: Check that the potential neighbor's x2 and y2 values are on the grid
-  // and not closed.
-
+  for (int i = 0; i < 4; i++) {
+    // TODO: Check that the potential neighbor's x2 and y2 values are on the
+    // grid
+    int x2 = x + delta[i][0];
+    int y2 = y + delta[i][1];
+    // and not closed.
+    if (CheckValidCell(x2, y2, grid)) {
+      int g2 = g + 1;
+      int h2 = Heuristic(x2, y2, goal[0], goal[1]);
+      AddToOpen(x2, y2, g2, h2, openlist, grid);
+    }
+  }
   // TODO: Increment g value, compute h value, and add neighbor to open list.
 }
 
