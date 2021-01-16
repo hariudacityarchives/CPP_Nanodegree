@@ -12,7 +12,7 @@ using std::sort;
 using std::string;
 using std::vector;
 
-enum class State { kEmpty, kObstacle, kClosed, kPath };
+enum class State { kEmpty, kObstacle, kClosed, kPath, kStart, kFinish };
 
 // directional deltas
 const int delta[4][2]{{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
@@ -138,6 +138,8 @@ vector<vector<State>> Search(vector<vector<State>> grid, int init[2],
 
     // Check if we're done.
     if (x == goal[0] && y == goal[1]) {
+      grid[init[0]][init[1]] = State::kStart;
+      grid[goal[0]][goal[1]] = State::kFinish;
       return grid;
     }
 
@@ -157,6 +159,10 @@ string CellString(State cell) {
     return "⛰️   ";
   case State::kPath:
     return "🚗   ";
+  case State::kStart:
+    return "🚦   ";
+  case State::kFinish:
+    return "🏁   ";
   default:
     return "0   ";
   }
@@ -178,7 +184,6 @@ int main() {
   int goal[2]{4, 5};
   auto board = ReadBoardFile("1.board");
   auto solution = Search(board, init, goal);
-
   PrintBoard(solution);
   // Tests
   TestHeuristic();
